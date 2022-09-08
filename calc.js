@@ -1,12 +1,31 @@
 let prices = {
     'min_cost': 2800,
-    'clean_type': {
-        'regular': 2800,
-        'general': 2800,
-        'after_rem': 2800, 
-        'vip': 0,
+    'appartment': {
+        'regular': 60,
+        'general': 110,
+        'after_rem': 130, 
+        'vip': 500,
     },
-    'sq_cost': 20,
+    'home': {
+        'regular': 60,
+        'general': 110,
+        'after_rem': 130, 
+        'vip': 500,
+        'general_wood': 140,
+        'after_rem_wood': 160, 
+    },
+    'office': {
+        'regular': 60,
+        'general': 110,
+        'after_rem': 130, 
+        'contract': 0,
+    },
+    'commercial': {
+        'regular': 60,
+        'general': 110,
+        'after_rem': 130, 
+        'contract': 0,
+    },
     'mks_cost': 50,
     'win_1': 300,
     'win_2': 600,
@@ -14,7 +33,14 @@ let prices = {
     'win_4': 2400,
     'win_5': 1200,
     'win_6': 1600,
-    'win_sqrs': 1250,
+    'win_1_rem': 350,
+    'win_2_rem': 700,
+    'win_3_rem': 1050,
+    'win_4_rem': 2800,
+    'win_5_rem': 1400,
+    'win_6_rem': 1700,
+    'win_sqrs': 250,
+    'win_sqrs_rem': 300,
     'fun_1': 2600,
     'fun_2': 3600,
     'fun_3': 4800,
@@ -39,7 +65,7 @@ let prices = {
     'stairs': 800,
 };
 
-let final_price = 0;
+let final_price = prices['min_cost'];
 let active_win = 1;
 
 window.addEventListener('click', (e) => {
@@ -71,10 +97,11 @@ window.addEventListener('click', (e) => {
     let vaccum = document.getElementById('vaccum');
     let stairs = document.getElementById('stairs');
 
-    // PRICE CHANGE
+    // OUTPUT SOURCE 
     let price = document.getElementById('payment');
-    final_price = prices['min_cost'] 
-    + prices['fun_1'] * fun_1.innerHTML
+    // PRICE CHANGE
+    // STABLE VALUES
+    final_price = prices['fun_1'] * fun_1.innerHTML
     + prices['fun_2'] * fun_2.innerHTML
     + prices['fun_3'] * fun_3.innerHTML
     + prices['fun_4'] * fun_4.innerHTML
@@ -97,6 +124,8 @@ window.addEventListener('click', (e) => {
     + prices['vaccum']
     + prices['stairs'];
 
+
+    // WINDOWS CLEAN CALC
     if (active_win == 1) {
 
         let win_type1 = document.getElementById('win_type_1');
@@ -106,50 +135,87 @@ window.addEventListener('click', (e) => {
         let win_type5 = document.getElementById('win_type_5');
         let win_type6 = document.getElementById('win_type_6');
 
-        final_price += prices['win_1'] * win_type1.innerHTML
-        + prices['win_2'] * win_type2.innerHTML
-        + prices['win_3'] * win_type3.innerHTML
-        + prices['win_4'] * win_type4.innerHTML
-        + prices['win_5'] * win_type5.innerHTML
-        + prices['win_6'] * win_type6.innerHTML;
+        if (clean_type.value == 'after_rem') {
+            final_price += prices['win_1_rem'] * win_type1.innerHTML
+            + prices['win_2_rem'] * win_type2.innerHTML
+            + prices['win_3_rem'] * win_type3.innerHTML
+            + prices['win_4_rem'] * win_type4.innerHTML
+            + prices['win_5_rem'] * win_type5.innerHTML
+            + prices['win_6_rem'] * win_type6.innerHTML;
+        } else {
+            final_price += prices['win_1'] * win_type1.innerHTML
+            + prices['win_2'] * win_type2.innerHTML
+            + prices['win_3'] * win_type3.innerHTML
+            + prices['win_4'] * win_type4.innerHTML
+            + prices['win_5'] * win_type5.innerHTML
+            + prices['win_6'] * win_type6.innerHTML;
+        };
 
     } else if (active_win == 0) {
         let win_sqrs = document.getElementById('win_sqrs');
 
-        final_price += prices['win_sqrs'] * win_sqrs.value;
+        if (clean_type.value == 'after_rem') {
+            final_price += prices['win_sqrs_rem'] * win_sqrs.value;
+        } else {
+            final_price += prices['win_sqrs'] * win_sqrs.value;
+        };
     }
 
+    // Out moscow calc
     if (mkd.value == 'Без выезда') {
         final_price = final_price;
     } else {
         final_price += prices['mks_cost'] * mkd.value;
     }
 
-    if (sqrs.value < 46) {
-        final_price = final_price;
-    } else {
-        final_price += prices['sq_cost'] * sqrs.value;
-    }
+    // SQRS price 
+    if (room_type.value == 'appartm') {
+        final_price += prices['appartment'][clean_type.value] * sqrs.value;
+    } else if (room_type.value == 'house') {
+        final_price += prices['home'][clean_type.value] * sqrs.value;
+    } else if (room_type.value == 'wood_house') {
+        if (clean_type.value == 'after_rem') {
+            let clean_type_merge = clean_type.value + '_rem'
+            final_price += prices['home'][clean_type_merge] * sqrs.value;
+        } else if (clean_type.value == 'general') {
+            let clean_type_merge = clean_type.value + '_rem'
+            final_price += prices['home'][clean_type_merge] * sqrs.value;
+        } else {
+            final_price += prices['home'][clean_type.value] * sqrs.value;
+        };
+    } else if (room_type.value == 'office') {
+        final_price += prices['office'][clean_type.value] * sqrs.value;
+    } else if (room_type.value == 'commer_space') {
+        final_price += prices['commercial'][clean_type.value] * sqrs.value;
+    };
 
+    // Tower delivery
     if (tower.checked) {
         final_price += prices['high_tower'];
     } else {
         final_price -= prices['high_tower'];
     }
 
+    // Vaccum delivery
     if (vaccum.checked) {
         final_price += prices['vaccum'];
     } else {
         final_price -= prices['vaccum'];
     }
 
+    // Stairs delivery
     if (stairs.checked) {
         final_price += prices['stairs'];
     } else {
         final_price -= prices['stairs'];
     }
 
-    price.innerHTML = final_price + "₽";
+    // Check min price 
+    if (parseInt(final_price) > prices['min_cost']) {
+        price.innerHTML = final_price + "₽";
+    } else {
+        price.innerHTML = prices['min_cost'] + "₽";
+    }
 });
 
 function change_value(tt, obj) {
