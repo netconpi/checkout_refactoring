@@ -67,6 +67,8 @@ let prices = {
 
 let final_price = prices['min_cost'];
 let active_win = 1;
+let active_ct = 'appartm';
+
 
 window.addEventListener('click', (e) => {
     // BASIC_VARIABLES
@@ -210,12 +212,44 @@ window.addEventListener('click', (e) => {
         final_price -= prices['stairs'];
     }
 
+
+    if (room_type.value != active_ct) {
+        let clean_type_selector = document.getElementById('clean_type_select');
+        if (room_type.value == 'office' || room_type.value == 'commer_space') {
+            // alert('coommer');
+            clean_type_selector.innerHTML = `
+            <option value="regular" class="styled_info_box_content" selected>Поддерживающая</option>
+            <option value="general" class="styled_info_box_content">Генеральная</option>
+            <option value="after_rem" class="styled_info_box_content">После ремонта</option>
+            <option value="contract" class="styled_info_box_content">Контракт</option>
+            `;
+        } else {
+            clean_type_selector.innerHTML = `
+            <option value="regular" class="styled_info_box_content" selected>Поддерживающая</option>
+            <option value="general" class="styled_info_box_content">Генеральная</option>
+            <option value="after_rem" class="styled_info_box_content">После ремонта</option>
+            <option value="vip" class="styled_info_box_content">Vip-уборка</option>
+            `;
+        };
+        active_ct = room_type.value;
+    };
+
     // Check min price 
     if (parseInt(final_price) > prices['min_cost']) {
         price.innerHTML = final_price + "₽";
     } else {
-        price.innerHTML = prices['min_cost'] + "₽";
+        if (room_type.value == 'office' || room_type.value == 'commer_space') {
+            price.innerHTML = "Договор";
+        }
     }
+
+    // Undraw elements 
+    if (clean_type.value == 'after_rem') {
+        let parent_representer = document.getElementById('additional_representer');
+        let child = document.getElementById('shower_repres');
+        parent_representer.removeChild(child);
+    };
+
 });
 
 function change_value(tt, obj) {
@@ -835,7 +869,7 @@ function draw_calc() {
                 </h1>
             </div>
 
-            <div class="checkout_additional">
+            <div class="checkout_additional" id="additional_representer">
                 <div class="checkout_additional_element">
                     <p class="checkout_additional_elem_text">
                         Шторы
@@ -858,7 +892,7 @@ function draw_calc() {
                     </div>
                 </div>
 
-                <div class="checkout_additional_element">
+                <div class="checkout_additional_element" id="shower_repres">
                     <p class="checkout_additional_elem_text">
                         Душевая кабина/Джакузи
                     </p>
