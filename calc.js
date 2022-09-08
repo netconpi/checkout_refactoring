@@ -65,9 +65,10 @@ let prices = {
     'stairs': 800,
 };
 
-let final_price = prices['min_cost'];
 let active_win = 1;
 let active_ct = 'appartm';
+let final_price = 0;
+let shower_state = 1;
 
 
 window.addEventListener('click', (e) => {
@@ -90,7 +91,7 @@ window.addEventListener('click', (e) => {
     let fun_12 = document.getElementById('fun_type_12');
     let add_1 = document.getElementById('add_type_shtori');
     let add_2 = document.getElementById('add_type_glazhka');
-    let add_3 = document.getElementById('add_type_shower');
+    // let add_3 = document.getElementById('add_type_shower');
     let add_4 = document.getElementById('add_type_light');
     let add_5 = document.getElementById('add_type_friger');
     let add_6 = document.getElementById('add_type_svch');
@@ -116,7 +117,7 @@ window.addEventListener('click', (e) => {
     + prices['fun_11'] * fun_11.innerHTML
     + prices['fun_12'] * fun_12.innerHTML
     + prices['shtori'] * add_1.innerHTML
-    + prices['shower'] * add_3.innerHTML
+    // + prices['shower'] * add_3.innerHTML
     + prices['light'] * add_4.innerHTML
     + prices['friger'] * add_5.innerHTML
     + prices['svch'] * add_6.innerHTML
@@ -125,6 +126,13 @@ window.addEventListener('click', (e) => {
     + prices['high_tower']
     + prices['vaccum']
     + prices['stairs'];
+
+    // SHOWER ADD
+    if (shower_state == 1) {
+        let add_3 = document.getElementById('add_type_shower');
+        
+        final_price += prices['shower'] * add_3.innerHTML
+    };
 
 
     // WINDOWS CLEAN CALC
@@ -177,10 +185,10 @@ window.addEventListener('click', (e) => {
         final_price += prices['home'][clean_type.value] * sqrs.value;
     } else if (room_type.value == 'wood_house') {
         if (clean_type.value == 'after_rem') {
-            let clean_type_merge = clean_type.value + '_rem'
+            let clean_type_merge = clean_type.value + '_wood'
             final_price += prices['home'][clean_type_merge] * sqrs.value;
         } else if (clean_type.value == 'general') {
-            let clean_type_merge = clean_type.value + '_rem'
+            let clean_type_merge = clean_type.value + '_wood'
             final_price += prices['home'][clean_type_merge] * sqrs.value;
         } else {
             final_price += prices['home'][clean_type.value] * sqrs.value;
@@ -244,11 +252,93 @@ window.addEventListener('click', (e) => {
     }
 
     // Undraw elements 
-    if (clean_type.value == 'after_rem') {
+
+    if (clean_type.value == 'after_rem' && shower_state == 1) {
         let parent_representer = document.getElementById('additional_representer');
         let child = document.getElementById('shower_repres');
         parent_representer.removeChild(child);
-    };
+        shower_state = 0;
+    } else if (clean_type.value == 'after_rem' && shower_state == 0) {
+        let parent_representer = document.getElementById('additional_representer');
+        parent_representer.innerHTML = `
+        <div class="checkout_additional_element">
+            <p class="checkout_additional_elem_text">
+                Шторы
+            </p>
+            <div class="controls_checkout">
+                <img src="https://cleanon.ru/wp-content/uploads/2022/09/minus.png" alt="" onclick="change_value(0, 'add_type_shtori')">
+                <p class="controls_checkout_amount_inverted" id="add_type_shtori">0</p>
+                <img src="https://cleanon.ru/wp-content/uploads/2022/09/plus.png" alt="" onclick="change_value(1, 'add_type_shtori')">
+            </div>
+        </div>
+
+        <div class="checkout_additional_element">
+            <p class="checkout_additional_elem_text">
+                Глажка
+            </p>
+            <div class="controls_checkout">
+                <img src="https://cleanon.ru/wp-content/uploads/2022/09/minus.png" alt="" onclick="change_value(0, 'add_type_glazhka')">
+                <p class="controls_checkout_amount_inverted" id="add_type_glazhka">0</p>
+                <img src="https://cleanon.ru/wp-content/uploads/2022/09/plus.png" alt="" onclick="change_value(1, 'add_type_glazhka')">
+            </div>
+        </div>
+
+        <div class="checkout_additional_element" id="shower_repres">
+            <p class="checkout_additional_elem_text">
+                Душевая кабина/Джакузи
+            </p>
+            <div class="controls_checkout">
+                <img src="https://cleanon.ru/wp-content/uploads/2022/09/minus.png" alt="" onclick="change_value(0, 'add_type_shower')">
+                <p class="controls_checkout_amount_inverted" id="add_type_shower">0</p>
+                <img src="https://cleanon.ru/wp-content/uploads/2022/09/plus.png" alt="" onclick="change_value(1, 'add_type_shower')">
+            </div>
+        </div>
+
+        <div class="checkout_additional_element">
+            <p class="checkout_additional_elem_text">
+                Осветительные приборы
+            </p>
+            <div class="controls_checkout">
+                <img src="https://cleanon.ru/wp-content/uploads/2022/09/minus.png" alt="" onclick="change_value(0, 'add_type_light')">
+                <p class="controls_checkout_amount_inverted" id="add_type_light">0</p>
+                <img src="https://cleanon.ru/wp-content/uploads/2022/09/plus.png" alt="" onclick="change_value(1, 'add_type_light')">
+            </div>
+        </div>
+
+        <div class="checkout_additional_element">
+            <p class="checkout_additional_elem_text">
+                Холодильник
+            </p>
+            <div class="controls_checkout">
+                <img src="https://cleanon.ru/wp-content/uploads/2022/09/minus.png" alt="" onclick="change_value(0, 'add_type_friger')">
+                <p class="controls_checkout_amount_inverted" id="add_type_friger">0</p>
+                <img src="https://cleanon.ru/wp-content/uploads/2022/09/plus.png" alt="" onclick="change_value(1, 'add_type_friger')">
+            </div>
+        </div>
+
+        <div class="checkout_additional_element">
+            <p class="checkout_additional_elem_text">
+                Микроволновая печь
+            </p>
+            <div class="controls_checkout">
+                <img src="https://cleanon.ru/wp-content/uploads/2022/09/minus.png" alt="" onclick="change_value(0, 'add_type_svch')">
+                <p class="controls_checkout_amount_inverted" id="add_type_svch">0</p>
+                <img src="https://cleanon.ru/wp-content/uploads/2022/09/plus.png" alt="" onclick="change_value(1, 'add_type_svch')">
+            </div>
+        </div>
+
+        <div class="checkout_additional_element">
+            <p class="checkout_additional_elem_text">
+                Духовой шкаф
+            </p>
+            <div class="controls_checkout">
+                <img src="https://cleanon.ru/wp-content/uploads/2022/09/minus.png" alt="" onclick="change_value(0, 'add_type_owen')">
+                <p class="controls_checkout_amount_inverted" id="add_type_owen">0</p>
+                <img src="https://cleanon.ru/wp-content/uploads/2022/09/plus.png" alt="" onclick="change_value(1, 'add_type_owen')">
+            </div>
+        </div>
+        `;
+    }
 
 });
 
@@ -405,7 +495,6 @@ function send_form() {
     let fun_12 = document.getElementById('fun_type_12');
     let add_1 = document.getElementById('add_type_shtori');
     let add_2 = document.getElementById('add_type_glazhka');
-    let add_3 = document.getElementById('add_type_shower');
     let add_4 = document.getElementById('add_type_light');
     let add_5 = document.getElementById('add_type_friger');
     let add_6 = document.getElementById('add_type_svch');
@@ -416,6 +505,10 @@ function send_form() {
     let name = document.getElementById('name_order');
     let phone = document.getElementById('phone_order_');
   
+    if (parseInt(final_price) < 2800) {
+        final_price = 2800;
+    }
+
   	let message = `Цена услуги: ${final_price}`;
     message += `
 ФИО ${name.value}
@@ -439,7 +532,6 @@ function send_form() {
     Ковролин ${fun_12.innerHTML}
     Шторы ${add_1.innerHTML}
     Глажка ${add_2.innerHTML}
-    Душевая кабина/Джакузи ${add_3.innerHTML}
     Осветительные приборы ${add_4.innerHTML}
     Холодильник ${add_5.innerHTML}
     Микроволновая печь ${add_6.innerHTML}
@@ -448,6 +540,11 @@ function send_form() {
     Доставка пылесоса ${vaccum.checked}
     Доставка стремянки ${stairs.checked}
     `;
+
+    if (shower_state == 1) {
+        let add_3 = document.getElementById('add_type_shower');
+        message += `Душевая кабина/Джакузи ${add_3.innerHTML}`;
+    }
 
     if (active_win == 1) {
         let win_type1 = document.getElementById('win_type_1');
