@@ -246,7 +246,7 @@ window.addEventListener('click', (e) => {
     if (parseInt(final_price) > prices['min_cost']) {
         price.innerHTML = final_price + "₽";
     } else {
-        if (room_type.value == 'office' || room_type.value == 'commer_space') {
+        if (clean_type.value == 'contract') {
             price.innerHTML = "Договор";
         }
     }

@@ -41,8 +41,8 @@
     font-family: 'Inter';
     font-style: normal;
     font-weight: 400;
-    font-size: 24px;
-    line-height: 29px;
+    font-size: 20px;
+    line-height: 25px;
     color: rgba(255, 255, 255, 0.8);
 
     margin-top: 26px;
@@ -77,8 +77,8 @@
     font-family: 'Inter';
     font-style: normal;
     font-weight: 500;
-    font-size: 24px;
-    line-height: 29px;
+    font-size: 20px;
+    line-height: 25px;
     color: #FF6C0A;
 
     margin: 0 auto;
@@ -107,8 +107,8 @@
     font-family: 'Inter';
     font-style: normal;
     font-weight: 500;
-    font-size: 24px;
-    line-height: 29px;
+    font-size: 20px;
+    line-height: 25px;
     color: #989898;
 
     margin-left: 36px;
@@ -137,8 +137,8 @@
     font-family: 'Inter';
     font-style: normal;
     font-weight: 500;
-    font-size: 28px;
-    line-height: 34px;
+    font-size: 24px;
+    line-height: 29px;
     color: #000000;
     margin-left: 36px;
     margin-bottom: 30px;
@@ -172,8 +172,8 @@
     font-family: 'Inter';
     font-style: normal;
     font-weight: 500;
-    font-size: 28px;
-    line-height: 34px;
+    font-size: 24px;
+    line-height: 29px;
     color: #000000;
     margin-left: 36px;
     margin-bottom: 30px;
@@ -181,7 +181,7 @@
 
 .tworrow_width {
     width: 330px;
-    height: 125px;
+    height: 110px;
 }
 
 .small_input {
@@ -206,8 +206,8 @@
     font-family: 'Inter';
     font-style: normal;
     font-weight: 500;
-    font-size: 28px !important;
-    line-height: 34px;
+    font-size: 24px !important;
+    line-height: 29px;
     color: #000000;
     margin-left: 36px;
     margin-bottom: 30px;
@@ -254,7 +254,7 @@
 }
 
 .select_mode {
-    width: 60%;
+    width: 55%;
     margin-top: 30px;
 }
 
